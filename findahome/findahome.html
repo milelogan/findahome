@@ -1,0 +1,121 @@
+
+if (isset($_POST['submit'])) {
+	$error = false;
+// Check if text field is not empty, if yes then sanitize the Post Title and assign to a variable
+	if (!empty($_POST['address'])) {
+		$address = sanitize($_POST['address']);
+	} else {
+		$error = true;
+		$title_err = 1;
+	}
+// Check if text field is not empty, if yes then Sanitize Post Category and assign to a variable
+	if (!empty($_POST['country'])) {
+		$state_name = sanitize($_POST['country']);
+		$state_name = intval($state_name);
+		if ($state_name == 0) {
+			$error = true;
+			$noCatErr = 1;
+		} 
+	} else {
+		$error = true;
+		$cat_err = 1;
+	}
+// Check if text field is not empty, if yes then Sanitize Post Body and assign to a variable
+	if (!empty($_POST['house_description'])) {
+		$house_description = trim(sanitize($_POST['house_description']));
+	} else {
+		$error = true;	
+		$article_err = 1;
+	}
+
+// Get image and carry out all neccessary validations
+	if ($_FILES['image']['error'] == 0) {
+		$img_size = $_FILES['image']['size'];
+		$img_name = $_FILES['image']['name'];
+		$tmp_path = $_FILES['image']['tmp_name'];
+		$img_type = $_FILES['image']['type'];
+// Restrict file size upload to less than 1MB
+		if ($img_size > 3200857612) {
+			$error = true;
+			$img_size_err = 1;
+		}
+// Restrict user from uploading any file other than an image
+		$extensions = array('jpg', 'jpeg', 'gif', 'png');
+		$img_ext = explode('/', $img_type);
+		$img_ext = end($img_ext);
+		$img_ext = strtolower($img_ext);
+
+		if (in_array($img_ext, $extensions) != true) {
+			$error = true;
+			$img_type_err = 1;
+		}
+
+	}
+
+
+if ($_FILES['images']['error'] == 0) {
+		$img_size = $_FILES['images']['size'];
+		$image_name = $_FILES['images']['name'];
+		$tmps_path = $_FILES['images']['tmp_name'];
+		$img_type = $_FILES['images']['type'];
+// Restrict file size upload to less than 1MB
+		if ($img_size > 3200857612) {
+			$error = true;
+			$img_size_err = 1;
+		}
+// Restrict user from uploading any file other than an image
+		$extensions = array('jpg', 'jpeg', 'gif', 'png');
+		$img_ext = explode('/', $img_type);
+		$img_ext = end($img_ext);
+		$img_ext = strtolower($img_ext);
+
+		if (in_array($img_ext, $extensions) != true) {
+			$error = true;
+			$img_type_err = 1;
+		}
+
+	}
+
+
+
+if ($_FILES['img']['error'] == 0) {
+		$img_size = $_FILES['img']['size'];
+		$image_three_name = $_FILES['img']['name'];
+		$tmp_three_path = $_FILES['img']['tmp_name'];
+		$img_type = $_FILES['img']['type'];
+// Restrict file size upload to less than 1MB
+		if ($img_size > 3200857612) {
+			$error = true;
+			$img_size_err = 1;
+		}
+// Restrict user from uploading any file other than an image
+		$extensions = array('jpg', 'jpeg', 'gif', 'png');
+		$img_ext = explode('/', $img_type);
+		$img_ext = end($img_ext);
+		$img_ext = strtolower($img_ext);
+
+		if (in_array($img_ext, $extensions) != true) {
+			$error = true;
+			$img_type_err = 1;
+		}
+
+	}
+
+
+
+// If error is false insert post into the database
+	if ($error === false) {
+		$house_reg_date = $_POST['house_reg_date'];
+		
+	$sql_stmt = "INSERT INTO house_profile (house_address, house_description, agent_id,country_id, reg_date) VALUES ('$address', '$house_description', '$agent_id', '$state_name', '$house_reg_date')"; 
+		$query = mysqli_query($link, $sql_stmt);
+		if ($query) {
+			
+			header("Location:house_images.php");
+			
+
+		}
+
+	}
+	
+}
